@@ -20,7 +20,7 @@ const EventDetail = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (eventDetail) {
+    if (eventDetail && eventDetail.teamName.length > 0) {
       getExtrasForTeam(eventDetail.teamName[0]._id).then((res) => {
         setTeamAExtras(res.data.scores);
       })
@@ -32,36 +32,6 @@ const EventDetail = () => {
   }, []);
 
   useEffect(() => {
-    if (eventDetail) {
-      if (teamA.length > 0) {
-        getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            let data = teamA.map(obj1 => {
-              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
-              return {...obj1, score : matchingObj.score};
-          });
-            if(data.length > 0){
-              setTeamA(data);
-            }
-          }
-        });
-      }
-
-      getExtrasForTeam({teamId:eventDetail.teamName[1]._id,eventId:id}).then((res) => {
-          if (res.data.scores.length > 0) {
-            let data = teamB.map(obj1 => {
-              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
-              return {...obj1, score : matchingObj.score};
-          });
-            if(data.length > 0){
-              setTeamB(data);
-            }
-          }
-      })
-    }
-  }, [eventDetail, teamA]);
-
-  useEffect(() => {
     setLoading(true);
     getEventByID(id)
       .then((res) => {
@@ -70,7 +40,7 @@ const EventDetail = () => {
         // get players for team A
         if (res.data.message[0].eventType === "MultiPlayer") {
           setPlayers(
-            res.data.message[0].teamName.map((item) => {
+            res.data.message[0].playerName.map((item) => {
               return { ...item, score: 0 };
             })
           );
@@ -139,7 +109,6 @@ const EventDetail = () => {
         }
       });
     } else if (eventDetail?.eventType === "MultiPlayer") {
-      console.log("Faltu main hi")
 
       var pusher = new Pusher("8e1b97efe8b0a23ff691", {
         cluster: "ap2",
@@ -176,6 +145,95 @@ const EventDetail = () => {
     }
   });
 
+  
+
+  // get latest score from db if game is team based
+  useEffect(() => {
+    if (eventDetail) {
+      if (teamA.length > 0 && eventDetail.teamName.length > 0) {
+        getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
+          if (res.data.scores.length > 0) {
+            let data = teamA.map(obj1 => {
+              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+              if (matchingObj) {
+                return { ...obj1, score: matchingObj.score };
+              }
+              return obj1;
+            });
+            if (data.length > 0) {
+              setTeamA(data);
+            }
+          }
+        });
+      }
+
+      if (teamB.length > 0 && eventDetail.teamName.length > 1) {
+        getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
+          if (res.data.scores.length > 0) {
+            let data = teamB.map(obj1 => {
+              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+              return { ...obj1, score: matchingObj.score };
+            });
+            if (data.length > 0) {
+              setTeamB(data);
+            }
+          }
+        })
+      }
+    }
+  }, [eventDetail, teamA, teamB]);
+
+  // get latest score from db if game is multiplayer based
+  useEffect(() => {
+    if (eventDetail) {
+      if (players.length > 0 && eventDetail.playerName.length > 0) {
+        getExtrasForTeam({ teamId: eventDetail.playerName[0]._id, eventId: id }).then((res) => {
+          if (res.data.scores.length > 0) {
+            let data = players.map(obj1 => {
+              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+              if(matchingObj){
+                return { ...obj1, score: matchingObj.score };
+              }
+              return obj1;
+            });
+            if (data.length > 0) {
+              setPlayers(data);
+            }
+          }
+        });
+      }
+    }
+  }, [eventDetail, players]);
+
+  // get latest score from db if game is player based
+  useEffect(() => {
+    if (eventDetail) {
+      if (playerA && eventDetail.teamName.length > 0) {
+        getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
+          if (res.data.scores.length > 0) {
+            const matchingObj = res.data.scores.find(obj2 => obj2.player === playerA._id);
+            let data = { ...playerA, score: matchingObj.score };
+            if (data.length > 0) {
+              setPlayerA(data);
+            }
+          }
+        });
+      }
+
+      if (playerB && eventDetail.teamName.length > 1) {
+        getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
+          if (res.data.scores.length > 0) {
+            const matchingObj = res.data.scores.find(obj2 => obj2.player === playerB._id);
+            let data = { ...playerB, score: matchingObj.score };
+            if (data.length > 0) {
+              setPlayerB(data);
+            }
+          }
+        });
+      }
+    }
+  }, [eventDetail, playerA, playerB]);
+
   return (
     <>
       <Navbar />
@@ -192,8 +250,8 @@ const EventDetail = () => {
               <div
                 className="card mt-3 mx-3"
                 style={{
-                  borderRadius: "20px",
-                  boxShadow: "0px 2px 4px 2px #eee",
+                  borderRadius: "1.25rem",
+                  boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
                 <div className="card-body">
@@ -208,7 +266,7 @@ const EventDetail = () => {
                             heigth="40px"
                           />
                           <p
-                            style={{ marginLeft: "15px" }}
+                            style={{ marginLeft: "0.938rem" }}
                             className="pt-2 mb-0"
                           >
                             {eventDetail?.eventName}
@@ -225,7 +283,7 @@ const EventDetail = () => {
                             heigth="40px"
                           />
                           <p
-                            style={{ marginLeft: "15px" }}
+                            style={{ marginLeft: "0.938rem" }}
                             className="pt-2 mb-0"
                           >
                             {eventDetail?.teamName[0]?.name}
@@ -234,7 +292,7 @@ const EventDetail = () => {
                         <div className="col-2 pt-2">VS</div>
                         <div className="col-5 d-flex float-right">
                           <p
-                            style={{ marginRight: "15px" }}
+                            style={{ marginRight: "0.938rem" }}
                             className="pt-2 mb-0"
                           >
                             {eventDetail?.teamName[1]?.name}
@@ -257,7 +315,7 @@ const EventDetail = () => {
                             heigth="40px"
                           />
                           <p
-                            style={{ marginLeft: "15px" }}
+                            style={{ marginLeft: "0.938rem" }}
                             className="pt-2 mb-0"
                           >
                             {eventDetail?.teamName[0]?.teamName}
@@ -265,7 +323,7 @@ const EventDetail = () => {
                         </div>
                         <div className="col-5 d-flex float-right">
                           <p
-                            style={{ marginRight: "15px" }}
+                            style={{ marginRight: "0.938rem" }}
                             className="pt-2 mb-0"
                           >
                             {eventDetail?.teamName[1]?.teamName}
@@ -286,7 +344,7 @@ const EventDetail = () => {
                   </p>
                   <p className="mt-2">
                     Winner:{" "}
-                    <span style={{ marginLeft: "35px" }}>
+                    <span style={{ marginLeft: "2.188rem" }}>
                       {eventDetail.winner.length === 0
                         ? "TBA"
                         : eventDetail.winner}
@@ -298,8 +356,8 @@ const EventDetail = () => {
               <div
                 className="card mt-3 mx-3"
                 style={{
-                  borderRadius: "20px",
-                  boxShadow: "0px 2px 4px 2px #eee",
+                  borderRadius: "1.25rem",
+                  boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
                 <div className="card-body">

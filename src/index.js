@@ -24,15 +24,15 @@ root.render(
     config={{
       swUrl: "/service-worker.js", // sw file in public default is service-worker.js
       onUpdate: (reg) => {
-        alert("sw cache was updated");
+        console.log("sw cache was updated");
         console.log(reg);
       },
       onSuccess: (reg) => {
-        alert("sw success installed");
+        console.log("sw success installed");
         console.log(reg);
       },
       onError: (reg) => {
-        alert("sw error to install");
+        console.logs("sw error to install");
         console.log(reg);
       },
       onPrompt:(e) => {

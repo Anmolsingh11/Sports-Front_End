@@ -24,7 +24,7 @@ const Itinerary = () => {
     return (
         <>
             <Navbar />
-            <div className="card mt-3 mx-3" style={{borderRadius:'15px',boxShadow:'0px 2px 4px 2px #eee'}}>
+            <div className="card mt-3 mx-3" style={{borderRadius:'0.938rem',boxShadow:'0px 0.125rem 0.25rem 0.125rem #eee'}}>
                 <div className="card-body">
                     <p>
                         itinerary

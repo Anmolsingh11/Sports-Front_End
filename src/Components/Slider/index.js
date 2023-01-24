@@ -9,24 +9,24 @@ const Slider = () => {
                 </div>
                 <div className="carousel-inner">
                     <div className="carousel-item active">
-                        {/* <div className="card" style={{ height: '100px', borderRadius: '20px' }}>
+                        {/* <div className="card" style={{ height: '100px', borderRadius: '1.25rem' }}>
                             <div className="card-body"></div>
                         </div> */}
-                        <img src={"/Images/b1.webp"} width="100%" height={"300px"} style={{borderRadius:'15px'}}/>
+                        <img src={"/Images/b1.webp"} width="100%" height={"auto"} style={{borderRadius:'0.938rem'}}/>
                     </div>
                     <div className="carousel-item">
-                        {/* <div className="card" style={{ height: '100px', borderRadius: '20px' }}>
+                        {/* <div className="card" style={{ height: '100px', borderRadius: '1.25rem' }}>
                             <div className="card-body"></div>
                         </div> */}
-                        <img src={"/Images/b2.webp"} width="100%" height={"300px"} style={{borderRadius:'15px'}}/>
+                        <img src={"/Images/b2.webp"} width="100%" height={"auto"} style={{borderRadius:'0.938rem'}}/>
                     </div>
                     {/* <div className="carousel-item">
-                        <div className="card" style={{ height: '100px', borderRadius: '20px' }}>
+                        <div className="card" style={{ height: '100px', borderRadius: '1.25rem' }}>
                             <div className="card-body"></div>
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <div className="card" style={{ height: '100px', borderRadius: '20px' }}>
+                        <div className="card" style={{ height: '100px', borderRadius: '1.25rem' }}>
                             <div className="card-body"></div>
                         </div>
                     </div> */}

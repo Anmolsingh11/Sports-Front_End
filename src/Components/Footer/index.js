@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const Footer = () =>{
     const navigate = useNavigate();
     return(
-        <div className="card header sticky-footer" style={{borderRadius: "20px 20px 0px 0px"}}>
+        <div className="card header sticky-footer" style={{borderRadius: "1.25rem 1.25rem 0px 0px"}}>
             <div className="card-body">
                 <div className="container-fluid">
                     <div className="row">

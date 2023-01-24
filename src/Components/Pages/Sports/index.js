@@ -90,19 +90,19 @@ const Sports = () => {
                 <div className="row">
                     {sports.map((item, index) => (
                         <div className="col-4" key={index}>
-                            <div className="card my-3 card-border" onClick={() => navigate(`/events/${item.name}`)} style={{ width: '100px', height: '100px' }}>
+                            <div className="card my-3 card-border" onClick={() => navigate(`/events/${item.name}`)} style={{ width: '6.25rem', height: '6.25rem' }}>
                                 <div className="card-body d-flex justify-content-center">
                                     {item.Icon === ""
                                         ?
-                                        <p style={{ fontSize: '14px', textAlign: 'center', marginTop:'15px' }}>{item.name}</p>
+                                        <p style={{ fontSize: '0.875rem', textAlign: 'center', marginTop:'0.938rem' }}>{item.name}</p>
                                         :
-                                        <img src={`${item.Icon}`} alt={item.name} width={"45px"} height={"45px"} />
+                                        <img src={`${item.Icon}`} alt={item.name} width={"40px"} height={"40px"} />
                                     }
                                 </div>
                                 <div className="footer">
                                     {item.Icon !== ""
                                         ?
-                                        <p style={{ fontSize: '12px', textAlign: 'center' }}>{item.name}</p>
+                                        <p style={{ fontSize: '0.75rem', textAlign: 'center' }}>{item.name}</p>
                                         :
                                         ""
                                     }
