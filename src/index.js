@@ -14,7 +14,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <ReactPwa
-    test //is to install in localhost, not required
     suspense={<>
       a preloader to load the service worker in the application 
       is the best way to not overload with component calls.
@@ -32,7 +31,7 @@ root.render(
         console.log(reg);
       },
       onError: (reg) => {
-        console.logs("sw error to install");
+        alert.log("sw error to install");
         console.log(reg);
       },
       onPrompt:(e) => {
@@ -40,7 +39,7 @@ root.render(
           console.log('user click on install and accept')
         }
         if(e.outcome === 'dismissed'){
-          console.log('user click on install and refuse')
+          alert.log('user click on install and refuse')
         }
       },
     }}
