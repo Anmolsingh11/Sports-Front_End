@@ -48,6 +48,7 @@ const EventDetail = () => {
           res.data.message[0].teamName[0].player.map((item, index) => {
             getPlayerByID(item).then((res) => {
               res.data.message[0]["score"] = 0;
+              res.data.message[0]["isOut"] = false;
               setTeamA((oldArr) => [...oldArr, res.data.message[0]]);
             });
           });
@@ -56,6 +57,7 @@ const EventDetail = () => {
           res.data.message[0].teamName[1].player.map((item, index) => {
             getPlayerByID(item).then((res) => {
               res.data.message[0]["score"] = 0;
+              res.data.message[0]["isOut"] = false;
               setTeamB((oldArr) => [...oldArr, res.data.message[0]]);
             });
           });
@@ -71,8 +73,23 @@ const EventDetail = () => {
         setLoading(false);
       });
   }, []);
+  
+  useEffect(() => {
+    if(eventDetail){
+      var pusher = new Pusher("8e1b97efe8b0a23ff691", {
+        cluster: "ap2",
+      });
 
+      var channel = pusher.subscribe("my-channel");
 
+      channel.bind(id, function (data) {
+        console.log("Here is data", JSON.stringify(data));
+        if(data.winner){
+          setEventDetail({...eventDetail, winner: data.winner});
+        }
+      })
+    }
+  },[])
   useEffect(() => {
     if (eventDetail?.eventType === "Team") {
       var pusher = new Pusher("8e1b97efe8b0a23ff691", {
@@ -91,7 +108,7 @@ const EventDetail = () => {
         }
         const updatedPlayers = teamA.map((item) => {
           if (item._id === data.playerId) {
-            return { ...item, score: data.score };
+            return { ...item, score: data.score, isOut: data.isOut};
           }
           return item;
         });
@@ -100,7 +117,7 @@ const EventDetail = () => {
         } else {
           const updatedPlayers1 = teamB.map((item) => {
             if (item._id === data.playerId) {
-              return { ...item, score: data.score };
+              return { ...item, score: data.score, isOut: data.isOut };
             }
           });
           if (updatedPlayers1[0] != undefined) {
@@ -143,7 +160,7 @@ const EventDetail = () => {
         }
       })
     }
-  });
+  },[]);
 
   
 
@@ -156,7 +173,7 @@ const EventDetail = () => {
             let data = teamA.map(obj1 => {
               const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
               if (matchingObj) {
-                return { ...obj1, score: matchingObj.score };
+                return { ...obj1, score: matchingObj.score, isOut: matchingObj.isOut };
               }
               return obj1;
             });
@@ -172,7 +189,7 @@ const EventDetail = () => {
           if (res.data.scores.length > 0) {
             let data = teamB.map(obj1 => {
               const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
-              return { ...obj1, score: matchingObj.score };
+              return { ...obj1, score: matchingObj.score, isOut: matchingObj.isOut };
             });
             if (data.length > 0) {
               setTeamB(data);
@@ -347,7 +364,7 @@ const EventDetail = () => {
                     <span style={{ marginLeft: "2.188rem" }}>
                       {eventDetail.winner.length === 0
                         ? "TBA"
-                        : eventDetail.winner}
+                        : eventDetail.winner[0].name != undefined ? eventDetail.winner[0].name : eventDetail.winner[0].teamName}
                     </span>
                   </p>
                 </div>
@@ -377,9 +394,9 @@ const EventDetail = () => {
                           </thead>
                           <tbody>
                             {teamA.map((item, index) => (
-                              <tr key={index}>
+                              <tr key={index} style={item.isOut ? {opacity:'0.6'} : {}}>
                                 <td>{index + 1}</td>
-                                <td>{item.name}</td>
+                                <td>{item.name} {item.isOut ? "(out)" : ""}</td>
                                 <td>{item.score}</td>
                               </tr>
                             ))}
