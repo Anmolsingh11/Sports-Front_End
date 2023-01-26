@@ -9,10 +9,10 @@ import { getAllItenerary } from "../../../Api/Itinerary";
 const Itinerary = () => {
 
     const [data,setData]=useState([])
-    const [date,setDate]=useState("25/01/2023");
+    const [date,setDate]=useState("");
 
     useEffect(()=>{
-        getAllItenerary(date).then((result)=>{
+        getAllItenerary(date.split("/").reverse().join("-")).then((result)=>{
             setData(result.data.Itineraries)
         }).
         catch((err)=>{
@@ -24,26 +24,27 @@ const Itinerary = () => {
     return (
         <>
             <Navbar />
-            <div className="card mt-3 mx-3" style={{borderRadius:'0.938rem',boxShadow:'0px 0.125rem 0.25rem 0.125rem #eee'}}>
+            <div className="card mt-3 mx-3" style={{borderRadius:'0.938rem',boxShadow:'0px 0.125rem 0.25rem 0.125rem #eee', marginBottom: '30%'}}>
                 <div className="card-body">
                     <p>
-                        itinerary
+                        Itinerary
                         <select style={{float:'right'}}  onChange={(e)=>{setDate(e.target.value)}}>
-                            <option value={"25/01/2023"} selected>25nd jan</option>
-                            <option value={"26/01/2023"}>26rd jan</option>
+                            <option selected>Select Date</option>
+                            <option value={"27/01/2023"} >27th January</option>
+                            <option value={"28/01/2023"}>28th January</option>
                         </select>
                     </p>
                     {data &&data.length>0?data.map((itinerary)=>(
                         <>
-                        <p>{itinerary._id}</p>
+                        <p>{date === "" ? itinerary._id.split("-").reverse().join("-") : date.split("/").join("-")}</p>
                         {itinerary?.Itineraries&&itinerary.Itineraries.length>0?itinerary.Itineraries.map((result)=>(
                             <div className="container-fluid">
                             <div className="row">
                                 <div className="col-4">
                                     <p>{result.time}</p>
                                 </div>
-                                <div className="col-6">
-                        <p>{result.EventDetail[0].eventName}<br/> {result.EventDetail[0].venue}</p>
+                                <div className="col-8">
+                        <p>{result.eventName}<br/> <span>{result.venue}</span></p>
                                 </div>
                             </div>
                         </div>

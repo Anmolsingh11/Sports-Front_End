@@ -80,6 +80,26 @@ const Sports = () => {
             name: "Beer Pong",
             Icon: "/Images/beer-pong.png"
         },
+        {
+            name: "March Past",
+            Icon: "/Images/parade.png"
+        },
+        {
+            name: "Tarang",
+            Icon: ""
+        },
+        {
+            name: "War Cry",
+            Icon: "/Images/shout.png"
+        },
+        {
+            name: "Star Wars",
+            Icon: ""
+        },
+        {
+            name: "Futsal",
+            Icon: "/Images/futsal.png"
+        },
     ]
 
     const navigate = useNavigate();
@@ -94,7 +114,7 @@ const Sports = () => {
                                 <div className="card-body d-flex justify-content-center">
                                     {item.Icon === ""
                                         ?
-                                        <p style={{ fontSize: '0.875rem', textAlign: 'center', marginTop:'0.938rem' }}>{item.name}</p>
+                                        <p style={{ fontSize: '0.875rem', textAlign: 'center', marginTop: '0.938rem' }}>{item.name}</p>
                                         :
                                         <img src={`${item.Icon}`} alt={item.name} width={"40px"} height={"40px"} />
                                     }
