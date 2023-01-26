@@ -278,9 +278,8 @@ const EventDetail = () => {
                         <div className="col-5 d-flex">
                           <img
                             src={eventDetail?.teamName[0]?.logo}
-                            alt="TeamAlogo"
-                            width="40px"
-                            heigth="40px"
+                            alt=""
+                            style={{width:'1.875em', height: '1.875em'}}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -295,9 +294,8 @@ const EventDetail = () => {
                         <div className="col-5 d-flex">
                           <img
                             src={eventDetail?.teamName[0]?.logo}
-                            alt="Playerlogo"
-                            width="40px"
-                            heigth="40px"
+                            alt=""
+                            style={{width:'1.875em', height: '1.875em'}}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -317,8 +315,7 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[1]?.logo}
                             alt="Playerlogo "
-                            width="40px"
-                            heigth="40px"
+                            style={{width:'1.875em', height: '1.875em'}}
                           />
                         </div>
                       </div>
@@ -327,9 +324,8 @@ const EventDetail = () => {
                         <div className="col-5 d-flex">
                           <img
                             src={eventDetail?.teamName[0]?.logo}
-                            alt="TeamAlogo"
-                            width="40px"
-                            heigth="40px"
+                            alt=""
+                            style={{width:'1.875em', height: '1.875em'}}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -338,6 +334,7 @@ const EventDetail = () => {
                             {eventDetail?.teamName[0]?.teamName}
                           </p>
                         </div>
+                        <div className="col-2 pt-2">VS</div>
                         <div className="col-5 d-flex float-right">
                           <p
                             style={{ marginRight: "0.938rem" }}
@@ -348,15 +345,14 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[1]?.logo}
                             alt="TeamBlogo"
-                            width="40px"
-                            heigth="40px"
+                            style={{width:'1.875em', height: '1.875em'}}
                           />
                         </div>
                       </div>
                     )}
                   </div>
                   <p className="text-center mt-2 p-0">
-                    {eventDetail.date} || {eventDetail.time} ||{" "}
+                    {eventDetail.date.split("-").reverse().join("-")} || {eventDetail.time} <br/>
                     {eventDetail.venue}{" "}
                   </p>
                   <p className="mt-2">

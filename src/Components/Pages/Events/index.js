@@ -23,7 +23,7 @@ const Events = () => {
     return (
         <>
             <Navbar />
-            <div className="mx-3">
+            <div className="mx-3" style={{paddingBottom: '30%'}}>
                 <div className="mt-3">
                     <p className="font-weight-500">Live Events</p>
                     {loading
@@ -41,16 +41,16 @@ const Events = () => {
                                         ?
                                         <div className="card mx-3 mt-3" key={index} onClick={() => navigate(`/event-detail/${item._id}`)} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee' }}>
                                             <div className="card-body">
-                                                <div className="container-fluid">
+                                                <p className="text-center h5">{item.eventName}</p>
+                                                <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"
                                                         ?
                                                         <div className="row">
                                                             <div className="col-5 d-flex">
                                                                 <img
                                                                     src={item.teamName[0]?.logo}
-                                                                    alt="TeamAlogo"
-                                                                    width="40px"
-                                                                    heigth="40px"
+                                                                    alt=""
+                                                                    style={{ width: '1.875rem', height: '1.875rem' }}
                                                                 />
                                                                 <p
                                                                     style={{ marginLeft: "15px" }}
@@ -65,13 +65,13 @@ const Events = () => {
                                                             ?
                                                             <div className="row">
                                                                 <div className="col-5 d-flex">
-                                                                    <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                    <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.teamName}</p>
+                                                                    <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                    <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.teamName}</p>
                                                                 </div>
                                                                 <div className="col-2 pt-2">VS</div>
                                                                 <div className="col-5 d-flex float-right">
-                                                                    <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.teamName}</p>
-                                                                    <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                    <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.teamName}</p>
+                                                                    <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                 </div>
                                                             </div>
                                                             :
@@ -79,19 +79,19 @@ const Events = () => {
                                                                 ?
                                                                 <div className="row">
                                                                     <div className="col-5 d-flex">
-                                                                        <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                        <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.name}</p>
+                                                                        <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                        <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.name}</p>
                                                                     </div>
                                                                     <div className="col-2 pt-2">VS</div>
                                                                     <div className="col-5 d-flex float-right">
-                                                                        <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.name}</p>
-                                                                        <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                        <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.name}</p>
+                                                                        <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                     </div>
                                                                 </div>
                                                                 :
                                                                 ""}
                                                 </div>
-                                                <p className="text-center m-0 p-0">{item.date} || {item.time} || {item.venue} </p>
+                                                <p className="text-center m-0 p-0">{item.date.split("-").reverse().join("-")} || {item.time} <br/> {item.venue} </p>
                                             </div>
                                         </div>
                                         :
@@ -118,16 +118,17 @@ const Events = () => {
                                         ?
                                         <div className="card mx-3 mt-3" key={index} onClick={() => navigate(`/event-detail/${item._id}`)} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee' }}>
                                             <div className="card-body">
-                                                <div className="container-fluid">
+                                                <p className="text-center h5">{item.eventName}</p>
+                                                <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"
                                                         ?
                                                         <div className="row">
                                                             <div className="col-5 d-flex">
                                                                 <img
                                                                     src={item.teamName[0]?.logo}
-                                                                    alt="TeamAlogo"
-                                                                    width="40px"
-                                                                    heigth="40px"
+                                                                    alt=""
+                                                                    style={{ width: '1.875rem', height: '1.875rem' }}
+
                                                                 />
                                                                 <p
                                                                     style={{ marginLeft: "15px" }}
@@ -142,13 +143,13 @@ const Events = () => {
                                                             ?
                                                             <div className="row">
                                                                 <div className="col-5 d-flex">
-                                                                    <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                    <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.teamName}</p>
+                                                                    <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                    <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.teamName}</p>
                                                                 </div>
                                                                 <div className="col-2 pt-2">VS</div>
                                                                 <div className="col-5 d-flex float-right">
-                                                                    <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.teamName}</p>
-                                                                    <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                    <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.teamName}</p>
+                                                                    <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                 </div>
                                                             </div>
                                                             :
@@ -156,19 +157,19 @@ const Events = () => {
                                                                 ?
                                                                 <div className="row">
                                                                     <div className="col-5 d-flex">
-                                                                        <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                        <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.name}</p>
+                                                                        <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                        <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.name}</p>
                                                                     </div>
                                                                     <div className="col-2 pt-2">VS</div>
                                                                     <div className="col-5 d-flex float-right">
-                                                                        <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.name}</p>
-                                                                        <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                        <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.name}</p>
+                                                                        <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                     </div>
                                                                 </div>
                                                                 :
                                                                 ""}
                                                 </div>
-                                                <p className="text-center m-0 p-0">{item.date} || {item.time} || {item.venue} </p>
+                                                <p className="text-center m-0 p-0">{item.date.split("-").reverse().join("-")} || {item.time} <br/> {item.venue} </p>
                                             </div>
                                         </div>
                                         :
@@ -195,16 +196,16 @@ const Events = () => {
                                         ?
                                         <div className="card mx-3 mt-3" key={index} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee', opacity: '0.6' }}>
                                             <div className="card-body">
-                                                <div className="container-fluid">
+                                                <p className="text-center h5">{item.eventName}</p>
+                                                <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"
                                                         ?
                                                         <div className="row">
                                                             <div className="col-5 d-flex">
                                                                 <img
                                                                     src={item.teamName[0]?.logo}
-                                                                    alt="TeamAlogo"
-                                                                    width="40px"
-                                                                    heigth="40px"
+                                                                    alt=""
+                                                                    style={{ width: '1.875rem', height: '1.875rem' }}
                                                                 />
                                                                 <p
                                                                     style={{ marginLeft: "15px" }}
@@ -219,13 +220,13 @@ const Events = () => {
                                                             ?
                                                             <div className="row">
                                                                 <div className="col-5 d-flex">
-                                                                    <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                    <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.teamName}</p>
+                                                                    <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                    <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.teamName}</p>
                                                                 </div>
                                                                 <div className="col-2 pt-2">VS</div>
                                                                 <div className="col-5 d-flex float-right">
-                                                                    <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.teamName}</p>
-                                                                    <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                    <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.teamName}</p>
+                                                                    <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                 </div>
                                                             </div>
                                                             :
@@ -233,19 +234,19 @@ const Events = () => {
                                                                 ?
                                                                 <div className="row">
                                                                     <div className="col-5 d-flex">
-                                                                        <img src={item?.teamName[0]?.logo} alt="Playerlogo" width="40px" heigth="40px" />
-                                                                        <p style={{ marginLeft: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[0]?.name}</p>
+                                                                        <img src={item?.teamName[0]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
+                                                                        <p style={{ marginLeft: '0.938rem' }} className=" mb-0">{item?.teamName[0]?.name}</p>
                                                                     </div>
                                                                     <div className="col-2 pt-2">VS</div>
                                                                     <div className="col-5 d-flex float-right">
-                                                                        <p style={{ marginRight: '0.938rem' }} className="pt-2 mb-0">{item?.teamName[1]?.name}</p>
-                                                                        <img src={item?.teamName[1]?.logo} alt="Playerlogo " width="40px" heigth="40px" />
+                                                                        <p style={{ marginRight: '0.938rem' }} className=" mb-0">{item?.teamName[1]?.name}</p>
+                                                                        <img src={item?.teamName[1]?.logo} alt="" style={{ width: '1.875rem', height: '1.875rem' }} />
                                                                     </div>
                                                                 </div>
                                                                 :
                                                                 ""}
                                                 </div>
-                                                <p className="text-center m-0 p-0">{item.date} || {item.time} || {item.venue} </p>
+                                                <p className="text-center m-0 p-0">{item.date.split("-").reverse().join("-")} || {item.time} <br/> {item.venue} </p>
                                             </div>
                                         </div>
                                         :
