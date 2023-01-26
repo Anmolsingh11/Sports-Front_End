@@ -53,10 +53,6 @@ const Sports = () => {
             Icon: ""
         },
         {
-            name: "Relay Race",
-            Icon: "/Images/relay.png"
-        },
-        {
             name: "Sack Race",
             Icon: "/Images/sack-race.png"
         },

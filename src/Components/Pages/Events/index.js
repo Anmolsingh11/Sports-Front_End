@@ -40,7 +40,7 @@ const Events = () => {
                                     item.status == "active"
                                         ?
                                         <div className="card mx-3 mt-3" key={index} onClick={() => navigate(`/event-detail/${item._id}`)} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee' }}>
-                                            <div className="card-body">
+                                            <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
                                                 <p className="text-center h5">{item.eventName}</p>
                                                 <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"
@@ -117,7 +117,7 @@ const Events = () => {
                                     item.status === undefined
                                         ?
                                         <div className="card mx-3 mt-3" key={index} onClick={() => navigate(`/event-detail/${item._id}`)} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee' }}>
-                                            <div className="card-body">
+                                            <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
                                                 <p className="text-center h5">{item.eventName}</p>
                                                 <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"
@@ -195,7 +195,7 @@ const Events = () => {
                                     item.status == "closed"
                                         ?
                                         <div className="card mx-3 mt-3" key={index} style={{ borderRadius: '1.25rem', boxShadow: '0px 0.125rem 0.25rem 0.125rem #eee', opacity: '0.6' }}>
-                                            <div className="card-body">
+                                            <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
                                                 <p className="text-center h5">{item.eventName}</p>
                                                 <div className="container-fluid" style={{ paddingLeft: '0px' }}>
                                                     {item.eventType === "MultiPlayer"

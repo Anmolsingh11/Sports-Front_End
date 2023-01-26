@@ -44,7 +44,7 @@ const Leaderboard = () => {
                     </table>
                 </div>
             </div>
-            <Footer />
+            <Footer active={"leaderboard"}/>
         </>
     );
 }

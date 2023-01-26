@@ -45,22 +45,21 @@ const EventDetail = () => {
             })
           );
         } else if (res.data.message[0].eventType === "Team") {
-          res.data.message[0].teamName[0].player.map((item, index) => {
-            getPlayerByID(item).then((res) => {
-              res.data.message[0]["score"] = 0;
-              res.data.message[0]["isOut"] = false;
-              setTeamA((oldArr) => [...oldArr, res.data.message[0]]);
-            });
+          let playerA = [];
+          res.data.message[0].teamName[0].player.map((item) => {
+            playerA.push({ ...item, score: 0, isOut: false });
           });
+          console.log("Here is your profile", playerA);
+          setTeamA((oldArr) => [...oldArr, ...playerA]);
 
           // get players for team B
-          res.data.message[0].teamName[1].player.map((item, index) => {
-            getPlayerByID(item).then((res) => {
-              res.data.message[0]["score"] = 0;
-              res.data.message[0]["isOut"] = false;
-              setTeamB((oldArr) => [...oldArr, res.data.message[0]]);
-            });
+          let playerB = [];
+          res.data.message[0].teamName[1].player.map((item) => {
+            playerB.push({ ...item, score: 0, isOut: false });
           });
+          console.log("Here is your profile B", playerB);
+          setTeamB((oldArr) => [...oldArr, ...playerB]);
+
         } else if (res.data.message[0].eventType === "Player") {
           setPlayerA({ ...res.data.message[0].teamName[0], score: 0 });
           setPlayerB({ ...res.data.message[0].teamName[1], score: 0 });
@@ -73,48 +72,37 @@ const EventDetail = () => {
         setLoading(false);
       });
   }, []);
-  
+
   useEffect(() => {
-    if(eventDetail){
-      var pusher = new Pusher("8e1b97efe8b0a23ff691", {
-        cluster: "ap2",
+    if (eventDetail) {
+      var pusher = new Pusher('8e1b97efe8b0a23ff691', {
+        cluster: 'ap2'
       });
 
-      var channel = pusher.subscribe("my-channel");
+      var channel = pusher.subscribe('my-channel');
 
       channel.bind(id, function (data) {
-        console.log("Here is data", JSON.stringify(data));
-        if(data.winner){
-          setEventDetail({...eventDetail, winner: data.winner});
-        }
-      })
-    }
-  },[])
-  useEffect(() => {
-    if (eventDetail?.eventType === "Team") {
-      var pusher = new Pusher("8e1b97efe8b0a23ff691", {
-        cluster: "ap2",
-      });
+        console.log(JSON.stringify(data));
 
-      var channel = pusher.subscribe("my-channel");
-
-      channel.bind(id, function (data) {
-        console.log("Here is data", JSON.stringify(data));
-        console.log("Here is Team", teamA);
-        if (data.extras && eventDetail.teamName[0]._id === data.extras.teamId) {
-          setTeamAExtras(teamAExtras + 1);
-        } else if (data.extras && eventDetail.teamName[1]._id === data.extras.teamId) {
-          setTeamBExtras(teamBExtras + 1);
+        if (data.winner) {
+          setEventDetail({ ...eventDetail, winner: data.winner });
         }
-        const updatedPlayers = teamA.map((item) => {
-          if (item._id === data.playerId) {
-            return { ...item, score: data.score, isOut: data.isOut};
+
+        if (eventDetail.eventType == "Team") {
+          if (data.extras && eventDetail.teamName[0]._id === data.extras.teamId) {
+            setTeamAExtras(teamAExtras + 1);
+          } else if (data.extras && eventDetail.teamName[1]._id === data.extras.teamId) {
+            setTeamBExtras(teamBExtras + 1);
           }
-          return item;
-        });
-        if (updatedPlayers[0] != undefined) {
-          setTeamA(updatedPlayers);
-        } else {
+          const updatedPlayers = teamA.map((item) => {
+            if (item._id === data.playerId) {
+              return { ...item, score: data.score, isOut: data.isOut };
+            }
+            return item;
+          });
+          if (updatedPlayers[0] != undefined) {
+            setTeamA(updatedPlayers);
+          }
           const updatedPlayers1 = teamB.map((item) => {
             if (item._id === data.playerId) {
               return { ...item, score: data.score, isOut: data.isOut };
@@ -123,133 +111,98 @@ const EventDetail = () => {
           if (updatedPlayers1[0] != undefined) {
             setTeamB(updatedPlayers1);
           }
-        }
-      });
-    } else if (eventDetail?.eventType === "MultiPlayer") {
-
-      var pusher = new Pusher("8e1b97efe8b0a23ff691", {
-        cluster: "ap2",
-      });
-
-      var channel = pusher.subscribe("my-channel");
-
-      channel.bind(id, function (data) {
-        console.log("Here is data", JSON.stringify(data));
-        const updatedPlayers = players.map((item) => {
-          if (item._id === data.playerId) {
-            return { ...item, score: data.score };
+        } else if (eventDetail?.eventType === "MultiPlayer") {
+          const updatedPlayers = players.map((item) => {
+            if (item._id === data.playerId) {
+              return { ...item, score: data.score };
+            }
+            return item;
+          });
+          setPlayers(updatedPlayers);
+        } else if (eventDetail?.eventType === "Player") {
+          if (playerA._id == data.playerId) {
+            setPlayerA({ ...playerA, score: data.score })
+          } else if (playerB._id == data.playerId) {
+            setPlayerB({ ...playerB, score: data.score })
           }
-          return item;
-        });
-        setPlayers(updatedPlayers);
-      });
-    } else if (eventDetail?.eventType === "Player") {
-
-      var pusher = new Pusher("8e1b97efe8b0a23ff691", {
-        cluster: "ap2",
-      });
-
-      var channel = pusher.subscribe("my-channel");
-
-      channel.bind(id, function (data) {
-        console.log("Here is data", JSON.stringify(data));
-        if (playerA._id == data.playerId) {
-          setPlayerA({ ...playerA, score: data.score })
-        } else if (playerB._id == data.playerId) {
-          setPlayerB({ ...playerB, score: data.score })
         }
-      })
+      });
     }
-  },[]);
+  });
 
-  
-
-  // get latest score from db if game is team based
   useEffect(() => {
     if (eventDetail) {
-      if (teamA.length > 0 && eventDetail.teamName.length > 0) {
+      if (eventDetail.eventType === "Team") {
         getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            let data = teamA.map(obj1 => {
-              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
-              if (matchingObj) {
-                return { ...obj1, score: matchingObj.score, isOut: matchingObj.isOut };
-              }
-              return obj1;
-            });
-            if (data.length > 0) {
-              setTeamA(data);
-            }
-          }
-        });
-      }
-
-      if (teamB.length > 0 && eventDetail.teamName.length > 1) {
-        getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            let data = teamB.map(obj1 => {
-              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+          let data = teamA.map(obj1 => {
+            const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+            if (matchingObj) {
               return { ...obj1, score: matchingObj.score, isOut: matchingObj.isOut };
-            });
-            if (data.length > 0) {
-              setTeamB(data);
             }
+            return obj1;
+          });
+          if (data.length > 0) {
+            setTeamA(data);
           }
-        })
-      }
-    }
-  }, [eventDetail, teamA, teamB]);
+        }).catch((err) => console.log(err));
 
-  // get latest score from db if game is multiplayer based
-  useEffect(() => {
-    if (eventDetail) {
-      if (players.length > 0 && eventDetail.playerName.length > 0) {
-        getExtrasForTeam({ teamId: eventDetail.playerName[0]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            let data = players.map(obj1 => {
-              const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
-              if(matchingObj){
-                return { ...obj1, score: matchingObj.score };
-              }
-              return obj1;
-            });
-            if (data.length > 0) {
-              setPlayers(data);
-            }
-          }
-        });
-      }
-    }
-  }, [eventDetail, players]);
-
-  // get latest score from db if game is player based
-  useEffect(() => {
-    if (eventDetail) {
-      if (playerA && eventDetail.teamName.length > 0) {
-        getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            const matchingObj = res.data.scores.find(obj2 => obj2.player === playerA._id);
-            let data = { ...playerA, score: matchingObj.score };
-            if (data.length > 0) {
-              setPlayerA(data);
-            }
-          }
-        });
-      }
-
-      if (playerB && eventDetail.teamName.length > 1) {
         getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
-          if (res.data.scores.length > 0) {
-            const matchingObj = res.data.scores.find(obj2 => obj2.player === playerB._id);
-            let data = { ...playerB, score: matchingObj.score };
-            if (data.length > 0) {
-              setPlayerB(data);
+          let data = teamB.map(obj1 => {
+            const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+            if (matchingObj) {
+              return { ...obj1, score: matchingObj.score, isOut: matchingObj.isOut };
             }
+            return obj1;
+          });
+          if (data.length > 0) {
+            setTeamB(data);
           }
-        });
+        }).catch((err) => console.log(err));
+      }
+      else if (eventDetail.eventType === "MultiPlayer") {
+        if (players.length > 0 && eventDetail.playerName.length > 0) {
+          getExtrasForTeam({ teamId: eventDetail.playerName[0]._id, eventId: id }).then((res) => {
+            if (res.data.scores.length > 0) {
+              let data = players.map(obj1 => {
+                const matchingObj = res.data.scores.find(obj2 => obj2.player === obj1._id);
+                if (matchingObj) {
+                  return { ...obj1, score: matchingObj.score };
+                }
+                return obj1;
+              });
+              if (data.length > 0) {
+                setPlayers(data);
+              }
+            }
+          });
+        }
+      } else if (eventDetail.eventType === "Player") {
+        if (playerA && eventDetail.teamName.length > 0) {
+          getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
+            if (res.data.scores.length > 0) {
+              const matchingObj = res.data.scores.find(obj2 => obj2.player === playerA._id);
+              let data = { ...playerA, score: matchingObj.score };
+              if (data.length > 0) {
+                setPlayerA(data);
+              }
+            }
+          });
+        }
+  
+        if (playerB && eventDetail.teamName.length > 1) {
+          getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
+            if (res.data.scores.length > 0) {
+              const matchingObj = res.data.scores.find(obj2 => obj2.player === playerB._id);
+              let data = { ...playerB, score: matchingObj.score };
+              if (data.length > 0) {
+                setPlayerB(data);
+              }
+            }
+          });
+        }
       }
     }
-  }, [eventDetail, playerA, playerB]);
+  }, [id, eventDetail]);
 
   return (
     <>
@@ -271,7 +224,7 @@ const EventDetail = () => {
                   boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
-                <div className="card-body">
+                <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
                   <div className="container-fluid">
                     {eventDetail.eventType === "MultiPlayer" ? (
                       <div className="row">
@@ -279,7 +232,7 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[0]?.logo}
                             alt=""
-                            style={{width:'1.875em', height: '1.875em'}}
+                            style={{ width: '1.875em', height: '1.875em' }}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -295,7 +248,7 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[0]?.logo}
                             alt=""
-                            style={{width:'1.875em', height: '1.875em'}}
+                            style={{ width: '1.875em', height: '1.875em' }}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -315,7 +268,7 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[1]?.logo}
                             alt="Playerlogo "
-                            style={{width:'1.875em', height: '1.875em'}}
+                            style={{ width: '1.875em', height: '1.875em' }}
                           />
                         </div>
                       </div>
@@ -325,7 +278,7 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[0]?.logo}
                             alt=""
-                            style={{width:'1.875em', height: '1.875em'}}
+                            style={{ width: '1.875em', height: '1.875em' }}
                           />
                           <p
                             style={{ marginLeft: "0.938rem" }}
@@ -345,14 +298,14 @@ const EventDetail = () => {
                           <img
                             src={eventDetail?.teamName[1]?.logo}
                             alt="TeamBlogo"
-                            style={{width:'1.875em', height: '1.875em'}}
+                            style={{ width: '1.875em', height: '1.875em' }}
                           />
                         </div>
                       </div>
                     )}
                   </div>
                   <p className="text-center mt-2 p-0">
-                    {eventDetail.date.split("-").reverse().join("-")} || {eventDetail.time} <br/>
+                    {eventDetail.date.split("-").reverse().join("-")} || {eventDetail.time} <br />
                     {eventDetail.venue}{" "}
                   </p>
                   <p className="mt-2">
@@ -373,7 +326,7 @@ const EventDetail = () => {
                   boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
-                <div className="card-body">
+                <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
                   {eventDetail.eventType === "Team" && eventDetail.sportName === "Cricket" ?
                     (
                       <>
@@ -390,7 +343,7 @@ const EventDetail = () => {
                           </thead>
                           <tbody>
                             {teamA.map((item, index) => (
-                              <tr key={index} style={item.isOut ? {opacity:'0.6'} : {}}>
+                              <tr key={index} style={item.isOut ? { opacity: '0.6' } : {}}>
                                 <td>{index + 1}</td>
                                 <td>{item.name} {item.isOut ? "(out)" : ""}</td>
                                 <td>{item.score}</td>

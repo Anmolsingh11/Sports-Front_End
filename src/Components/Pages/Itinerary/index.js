@@ -55,7 +55,7 @@ const Itinerary = () => {
                    
                 </div>
             </div>
-            <Footer />
+            <Footer active={"itinerary"}/>
         </>
     );
 }

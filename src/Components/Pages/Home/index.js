@@ -11,7 +11,7 @@ return (
     <Navbar/>
     <Slider/>
     <Sports/>
-    <Footer/>
+    <Footer active={"home"}/>
     </>
 );
 }
