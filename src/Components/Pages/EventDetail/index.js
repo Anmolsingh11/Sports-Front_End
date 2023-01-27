@@ -21,15 +21,15 @@ const EventDetail = () => {
 
   useEffect(() => {
     if (eventDetail && eventDetail.teamName.length > 0) {
-      getExtrasForTeam(eventDetail.teamName[0]._id).then((res) => {
-        setTeamAExtras(res.data.scores);
+      getExtrasForTeam({ teamId: eventDetail.teamName[0]._id, eventId: id }).then((res) => {
+        setTeamAExtras(res.data.scores[0].extras.count);
       })
 
-      getExtrasForTeam(eventDetail.teamName[1]._id).then((res) => {
-        setTeamBExtras(res.data.scores);
+      getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
+        setTeamBExtras(res.data.scores[0].extras.count);
       })
     }
-  }, []);
+  }, [eventDetail]);
 
   useEffect(() => {
     setLoading(true);
@@ -188,7 +188,7 @@ const EventDetail = () => {
             }
           });
         }
-  
+
         if (playerB && eventDetail.teamName.length > 1) {
           getExtrasForTeam({ teamId: eventDetail.teamName[1]._id, eventId: id }).then((res) => {
             if (res.data.scores.length > 0) {
@@ -224,7 +224,7 @@ const EventDetail = () => {
                   boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
-                <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
+                <div className="card-body" style={{ padding: "0.5rem 0.5rem" }}>
                   <div className="container-fluid">
                     {eventDetail.eventType === "MultiPlayer" ? (
                       <div className="row">
@@ -326,7 +326,7 @@ const EventDetail = () => {
                   boxShadow: "0px 0.125rem 0.25rem 0.125rem #eee",
                 }}
               >
-                <div className="card-body" style={{padding: "0.5rem 0.5rem"}}>
+                <div className="card-body" style={{ padding: "0.5rem 0.5rem" }}>
                   {eventDetail.eventType === "Team" && eventDetail.sportName === "Cricket" ?
                     (
                       <>
